@@ -8,9 +8,10 @@ const translators: Record<string, deepl.Translator> = {};
 let sourceLanguages: Record<string, Record<string, true>> = {};
 let targetLanguages: Record<string, Record<string, true>> = {};
 
-async function getTranslator({authKey}: any): Promise<[deepl.Translator, Record<string, true>, Record<string, true>]> {
+async function getTranslator({authKey, serverUrl}: any): Promise<[deepl.Translator, Record<string, true>, Record<string, true>]> {
     if (!translators[authKey]) {
-        const t = new deepl.Translator(authKey);
+        const options = serverUrl ? {serverUrl} : undefined;
+        const t = new deepl.Translator(authKey, options);
         sourceLanguages[authKey] = (await t.getSourceLanguages()).reduce((acc, l) => Object.assign(acc, {[l.code]: true}), {});
         targetLanguages[authKey] = (await t.getTargetLanguages()).reduce((acc, l) => Object.assign(acc, {[l.code]: true}), {});
         translators[authKey] = t;
