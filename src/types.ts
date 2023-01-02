@@ -11,8 +11,8 @@ export type projects_definition = Record<string, Omit<project_definition, 'name'
 
 export type project_definition = {
     name: string;
-    translations: translations_project_definition;
-    index: index_project_definition;
+    translations?: translations_project_definition;
+    index?: index_project_definition;
     config?: Record<string, any>;
 }
 
