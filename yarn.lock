@@ -296,11 +296,12 @@
   resolved "https://registry.yarnpkg.com/@genstackio/deep/-/deep-0.1.0.tgz#0c996b6001ff44f08123f41153e14076ca3e5c31"
   integrity sha512-6c3pds2OhxTxPXGfXOj2Et0HIM/ba5rjSDSXXIuxSHmrRgZkNiDh4U9KvJR5lXjEkMndPFqKRXuIY91Lp1hPrA==
 
-"@genstackio/translator@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@genstackio/translator/-/translator-0.3.0.tgz#b7fe42d29411a016e46ec77653a5fdfc8dff700d"
-  integrity sha512-k6M+9Wskziz8ZPyVbyorjpfmxHvb8hTlo8WcdsgWh5O/3EbC8jEDOVmO8+WSS6Jn+CvMRzz32BqMdx3Xxa87+Q==
+"@genstackio/translator@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@genstackio/translator/-/translator-0.4.0.tgz#d848953ebb92c8f7c41d6af555dd873abaa3e697"
+  integrity sha512-sNcfjwjE7lS6yuAjF7w6FWlOnAS4IsjF7bG6jYroKsahNJrMrkqOW1P+XA9XiV24BTL11ISMW8/ceBuwq0TYsA==
   dependencies:
+    "@genstackio/deep" "^0.1.0"
     deepl-node "^1.7.2"
     html-entities "^2.3.3"
 
