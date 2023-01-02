@@ -1,0 +1,8 @@
+<% locales.forEach(locale => { %>const <%= locale %> = require('../translations/<%= locale %>.json');
+<% }) %>
+const translations = {
+<% locales.forEach(locale => { %>   '<%= locale.replace('_', '-') %>': <%= locale %>,
+<% }) %>
+};
+
+export default translations;

@@ -24,7 +24,7 @@ export type translations_project_definition = {
 }
 
 export type index_project_definition = {
-    file: string;
+    path: string;
     format: string;
 }
 

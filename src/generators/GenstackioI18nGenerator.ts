@@ -1,6 +1,6 @@
 import AbstractI18nGenerator from "../AbstractI18nGenerator";
 import {
-    i18n_generator_options,
+    i18n_generator_options, index_project_definition,
     project_definition,
     translatable_item,
     translated_item,
@@ -9,6 +9,7 @@ import {
 import path from 'path';
 import fs from 'fs';
 import {translate} from "../services/translator";
+import ejs from 'ejs';
 
 export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
     async generate(): Promise<void> {
@@ -51,6 +52,8 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
             else acc.failures[generatedLocales[index]] = r.reason;
             return acc;
         }, {successes: {}, failures: {}});
+
+        await this.saveIndexFile(project.index, project.translations.locales);
 
         if (Object.keys(failures).length) {
             Object.entries(failures).forEach(([locale, failure]: [string, any]) => {
@@ -142,6 +145,12 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
     // noinspection JSUnusedLocalSymbols
     async saveTranslationFile(def: translations_project_definition, locale: string, updatedLocaleKeys: any) {
         fs.writeFileSync(this.getLocaleTranslationFilePath(def.dir, def.file, locale), JSON.stringify(updatedLocaleKeys, null, 4));
+    }
+    async saveIndexFile(def: index_project_definition, locales: string[]) {
+        if (!def || !def.path) return;
+
+        const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {locales});
+        fs.writeFileSync(path.resolve(def.path), x);
     }
 }
 
