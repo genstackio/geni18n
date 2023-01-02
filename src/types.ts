@@ -1,5 +1,5 @@
 export type i18n_generator_options = {
-    template: string;
+    template?: string;
     target: string;
     configFile?: string;
     config?: Record<string, any>;
