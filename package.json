@@ -1,0 +1,45 @@
+{
+  "name": "@genstackio/i18ngen",
+  "version": "0.0.0",
+  "description": "I18n files Generator",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib",
+    "resources"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "preversion": "yarn test",
+    "version": "yarn --silent build && git add -A .",
+    "postversion": "git push && git push --tags",
+    "build": "tsc",
+    "test": "jest --config jest.config.js",
+    "run-cli": "yarn --silent build && ./bin/sdkgen"
+  },
+  "dependencies": {
+    "debug": "^4.3.2",
+    "yargs": "^17.3.1",
+    "cross-fetch": "^3.1.4",
+    "yaml": "^1.10.2",
+    "deepl-node": "^1.7.2"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "typescript": "^4.5.2",
+    "@types/node": "^16.11.9",
+    "@types/jest": "^27.0.3",
+    "ts-jest": "^27.0.7",
+    "cross-fetch": "^3.1.4"
+  },
+  "bin": {
+    "i18ngen": "./bin/i18ngen"
+  }
+}

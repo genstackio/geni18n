@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+
+require('../lib/utils/cli').default(process.argv);
