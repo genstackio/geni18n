@@ -1,6 +1,6 @@
 import loadConfig from "./loadConfig";
 import {i18n_generator_options, project_definition} from "../types";
-import {generateProject} from "./generateProject";
+import generateProject from "./generateProject";
 
 export async function generate(options: i18n_generator_options) {
     options.config && await loadConfig(options.config, options);

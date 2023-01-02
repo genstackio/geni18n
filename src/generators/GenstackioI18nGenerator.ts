@@ -2,18 +2,13 @@ import AbstractI18nGenerator from "../AbstractI18nGenerator";
 import {
     i18n_generator_options, index_project_definition,
     project_definition,
-    translatable_item,
-    translated_item,
     translations_project_definition
 } from "../types";
-import path from 'path';
 import fs from 'fs';
-import {translate} from "../services/translator";
 import ejs from 'ejs';
-import deepClone from "../utils/deepClone";
-import populateObjectFromPathAndValue from "../utils/populateObjectFromPathAndValue";
-import deepSort from "../utils/deepSort";
-import deepClean from "../utils/deepClean";
+import path from 'path';
+import {translateI18n} from "@genstackio/translator";
+import {deepSort} from "@genstackio/deep";
 
 export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
     async generate(): Promise<void> {
@@ -57,52 +52,18 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
         return fs.existsSync(p) ? require(p) : {};
     }
     protected async generateProjectLocale(locale: string, masterLocale: string, masterKeys: any, project: project_definition, options: i18n_generator_options) {
-        let localeKeys = await this.fetchTranslationFile(project.translations!, locale);
-        !!project.translations!.clean && (localeKeys = await this.cleanKeysComparedToReference(localeKeys, masterKeys));
-        const translatableKeys = await this.computeTranslatableKeys(masterKeys, localeKeys);
-        const translatedKeys = await this.translateTranslatableKeys(translatableKeys, masterLocale, locale, options.config);
-        const updatedLocaleKeys = await this.mergeTranslatedKeysIntoLocaleKeys(translatedKeys, localeKeys);
-        await this.saveTranslationFile(project.translations!, locale, updatedLocaleKeys);
-    }
-    protected async cleanKeysComparedToReference(a, b) {
-        return deepClean(a, b);
-    }
-    protected async computeTranslatableKeys(aKeys, bKeys) {
-        return Object.entries(aKeys).reduce((acc, [k, v]: [string, any]) => {
-            acc[k] = Object.entries(v).reduce((acc2, [kk, vv]) => {
-                if (bKeys && bKeys[k] && bKeys[k][kk]) return acc2;
-                acc2[kk] = vv;
-                return acc2;
-            }, {});
-            if (!Object.keys(acc[k]).length) delete acc[k];
-            return acc;
-        }, {});
-    }
-    protected convertTranslatedItemsToKeys(items: translated_item[]) {
-        return items.reduce((acc, item) => {
-            return populateObjectFromPathAndValue(acc, item.item.path, item.translation)
-        }, {});
-    }
-    protected convertKeysToTranslatableItems(keys: Record<string, any>) {
-        return Object.entries(keys).reduce((acc, [k, v]: [string, any]) => {
-            return Object.entries(v as Record<string, any>).reduce((acc2, [kk, vv]: [string, string]) => {
-                acc2.push({text: vv, path: `${k}|||${kk}`});
-                return acc2;
-            }, acc) as any;
-        }, [] as translatable_item[]);
-    }
-    protected async translateTranslatableKeys(translatableKeys, sourceLocale, targetLocale, config?: any) {
-        return this.convertTranslatedItemsToKeys(await translate(this.convertKeysToTranslatableItems(translatableKeys), sourceLocale, targetLocale, config));
-    }
-    protected async mergeTranslatedKeysIntoLocaleKeys(translatedKeys, localeKeys) {
-        return Object.entries(translatedKeys).reduce((acc, [k, v]: [string, any]) => {
-            if (!acc[k]) acc[k] = {};
-            acc[k] = Object.entries(v).reduce((acc2, [kk, vv]) => {
-                acc2[kk] = vv;
-                return acc2;
-            }, acc[k]);
-            return acc;
-        }, deepClone(localeKeys));
+        await this.saveTranslationFile(
+            project.translations!,
+            locale,
+            await translateI18n(
+                await this.fetchTranslationFile(project.translations!, locale),
+                masterKeys,
+                masterLocale,
+                locale,
+                options.config,
+                project.translations
+            )
+        );
     }
     // noinspection JSUnusedLocalSymbols
     protected async saveTranslationFile(def: translations_project_definition, locale: string, updatedLocaleKeys: any) {
