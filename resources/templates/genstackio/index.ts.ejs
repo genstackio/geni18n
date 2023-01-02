@@ -1,4 +1,4 @@
-<% locales.forEach(locale => { %>const <%= locale %> = require('../translations/<%= locale %>.json');
+<% locales.forEach(locale => { %>const <%= locale %> = require('<%- dir || '../translations' %>/<%= locale %>.json');
 <% }) %>
 const translations = {
 <% locales.forEach(locale => { %>   '<%= locale.replace('_', '-') %>': <%= locale %>,

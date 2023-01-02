@@ -149,7 +149,9 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
     async saveIndexFile(def: index_project_definition, locales: string[]) {
         if (!def || !def.path) return;
 
-        const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {locales});
+        const vars = def.vars;
+
+        const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {...(vars || {}), locales});
         fs.writeFileSync(path.resolve(def.path), x);
     }
 }

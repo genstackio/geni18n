@@ -26,6 +26,7 @@ export type translations_project_definition = {
 export type index_project_definition = {
     path: string;
     format: string;
+    vars?: Record<string, any>;
 }
 
 export type translatable_item = {
