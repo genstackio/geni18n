@@ -1,4 +1,4 @@
-export async function deepClone(a) {
+export function deepClone(a) {
     if (!a) return a;
     switch (typeof a) {
         case 'string': return a;

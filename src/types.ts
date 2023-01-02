@@ -17,6 +17,8 @@ export type project_definition = {
 }
 
 export type translations_project_definition = {
+    sort?: boolean;
+    clean?: boolean;
     dir: string;
     file: string;
     locales: string[];
@@ -24,6 +26,7 @@ export type translations_project_definition = {
 }
 
 export type index_project_definition = {
+    sort?: boolean;
     path: string;
     format: string;
     vars?: Record<string, any>;

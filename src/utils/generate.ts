@@ -7,6 +7,7 @@ export async function generate(options: i18n_generator_options) {
 
     const {projects: projectsMap = {}} = options;
     const projects = Object.entries(projectsMap).reduce((acc, [k, v]: [string, Omit<project_definition, 'name'>]) => {
+        v = v || {}; // in case project is `<projectName>: ~`
         acc.push({name: k, ...v, config: {...(options.config || {}), ...(v.config || {})}});
         return acc;
     }, [] as project_definition[]);

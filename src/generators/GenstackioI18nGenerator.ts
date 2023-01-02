@@ -12,6 +12,8 @@ import {translate} from "../services/translator";
 import ejs from 'ejs';
 import deepClone from "../utils/deepClone";
 import populateObjectFromPathAndValue from "../utils/populateObjectFromPathAndValue";
+import deepSort from "../utils/deepSort";
+import deepClean from "../utils/deepClean";
 
 export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
     async generate(): Promise<void> {
@@ -26,6 +28,8 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
         const reports = await Promise.allSettled(generatedLocales.map(async (locale) =>
             this.generateProjectLocale(locale, project.translations!.master, masterKeys, project, options)
         ));
+
+        await this.saveTranslationFile(project.translations!, project.translations.master, masterKeys);
 
         const {failures} = reports.reduce((acc: any, r: any, index: number) => {
             if (r.status === 'fulfilled') acc.successes[generatedLocales[index]] = r.value;
@@ -53,11 +57,15 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
         return fs.existsSync(p) ? require(p) : {};
     }
     protected async generateProjectLocale(locale: string, masterLocale: string, masterKeys: any, project: project_definition, options: i18n_generator_options) {
-        const localeKeys = await this.fetchTranslationFile(project.translations!, locale);
+        let localeKeys = await this.fetchTranslationFile(project.translations!, locale);
+        !!project.translations!.clean && (localeKeys = await this.cleanKeysComparedToReference(localeKeys, masterKeys));
         const translatableKeys = await this.computeTranslatableKeys(masterKeys, localeKeys);
         const translatedKeys = await this.translateTranslatableKeys(translatableKeys, masterLocale, locale, options.config);
         const updatedLocaleKeys = await this.mergeTranslatedKeysIntoLocaleKeys(translatedKeys, localeKeys);
         await this.saveTranslationFile(project.translations!, locale, updatedLocaleKeys);
+    }
+    protected async cleanKeysComparedToReference(a, b) {
+        return deepClean(a, b);
     }
     protected async computeTranslatableKeys(aKeys, bKeys) {
         return Object.entries(aKeys).reduce((acc, [k, v]: [string, any]) => {
@@ -98,12 +106,19 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
     }
     // noinspection JSUnusedLocalSymbols
     protected async saveTranslationFile(def: translations_project_definition, locale: string, updatedLocaleKeys: any) {
+        if (def.sort) {
+            updatedLocaleKeys = deepSort(updatedLocaleKeys);
+        }
         fs.writeFileSync(this.getLocaleTranslationFilePath(def.dir, def.file, locale), JSON.stringify(updatedLocaleKeys, null, 4));
     }
     protected async saveIndexFile(def: index_project_definition, locales: string[]) {
         if (!def || !def.path) return;
 
         const vars = def.vars;
+
+        if (def.sort) {
+            locales.sort();
+        }
 
         const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {...(vars || {}), locales});
         fs.writeFileSync(path.resolve(def.path), x);
