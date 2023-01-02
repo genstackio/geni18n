@@ -120,7 +120,19 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
             locales.sort();
         }
 
-        const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {...(vars || {}), locales});
+        const localePattern = def.localePattern || '{{lg}}-{{CC}}';
+
+        const localeMap = locales.reduce((acc, l) => {
+            const [lg, CC] = l.split('_');
+            acc[l] = localePattern
+                .replace('{{lg}}', lg)
+                .replace('{{LG}}', lg.toUpperCase())
+                .replace('{{cc}}', CC.toLowerCase())
+                .replace('{{CC}}', CC)
+            ;
+            return acc;
+        }, {});
+        const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {...(vars || {}), locales, localeMap});
         fs.writeFileSync(path.resolve(def.path), x);
     }
 }

@@ -27,6 +27,7 @@ export type translations_project_definition = {
 
 export type index_project_definition = {
     sort?: boolean;
+    localePattern?: string;
     path: string;
     format: string;
     vars?: Record<string, any>;

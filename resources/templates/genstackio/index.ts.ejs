@@ -1,8 +1,7 @@
 <% locales.forEach(locale => { %>const <%= locale %> = require('<%- ('undefined' !== typeof dir) ? dir : '../translations' %>/<%= locale %>.json');
 <% }) %>
 const translations = {
-<% locales.forEach(locale => { %>   '<%= locale.replace('_', '-') %>': <%= locale %>,
-<% }) %>
-};
+<% Object.entries(localeMap).forEach(([locale, key]) => { %>   <%- key === locale ? key : `'${key}': ${locale}` %>,
+<% }) %>};
 
 export default translations;
