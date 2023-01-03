@@ -7,10 +7,22 @@ import {
 import fs from 'fs';
 import ejs from 'ejs';
 import path from 'path';
-import {translateI18n} from "@genstackio/translator";
+import {TranslatorService} from "@genstackio/translator";
 import {deepSort} from "@genstackio/deep";
+import DeeplPlugin from "@genstackio/translator-deepl";
+import {AmazonTranslatePlugin} from "@genstackio/translator-amazontranslate";
+import ITranslatorService from "@genstackio/translator/lib/ITranslatorService";
 
-export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
+export class GenstackioI18nGenerator extends AbstractI18nGenerator {
+    protected readonly translator: ITranslatorService;
+    constructor(project: project_definition, options: i18n_generator_options) {
+        super(project, options);
+        this.translator = this.createTranslator();
+    }
+    async listLocales(): Promise<Record<string, { sourceLocales: string[]; targetLocales: string[] }>> {
+        const options = this.getOptions();
+        return this.translator.listLocales(options?.config || {});
+    }
     async generate(): Promise<void> {
         const project = this.getProject();
         const options = this.getOptions();
@@ -55,7 +67,7 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
         await this.saveTranslationFile(
             project.translations!,
             locale,
-            await translateI18n(
+            await this.translator.translateI18n(
                 await this.fetchTranslationFile(project.translations!, locale),
                 masterKeys,
                 masterLocale,
@@ -95,6 +107,13 @@ export abstract class GenstackioI18nGenerator extends AbstractI18nGenerator {
         }, {});
         const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {...(vars || {}), locales, localeMap});
         fs.writeFileSync(path.resolve(def.path), x);
+    }
+    protected createTranslator(): ITranslatorService {
+        const t = new TranslatorService();
+        t.registerPlugin('deepl', new DeeplPlugin(), {'*': 10});
+        t.registerPlugin('amazontranslate', new AmazonTranslatePlugin(), {'*': 1});
+
+        return t;
     }
 }
 

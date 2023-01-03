@@ -14,6 +14,9 @@ export abstract class AbstractI18nGenerator implements II18nGenerator {
     getOptions(): i18n_generator_options {
         return this.options;
     }
+    async listLocales(): Promise<Record<string, { sourceLocales: string[]; targetLocales: string[] }>> {
+        return {};
+    }
     async generate(): Promise<void> {
     }
 }
