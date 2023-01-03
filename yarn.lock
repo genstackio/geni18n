@@ -296,18 +296,18 @@
   resolved "https://registry.yarnpkg.com/@genstackio/deep/-/deep-0.1.0.tgz#0c996b6001ff44f08123f41153e14076ca3e5c31"
   integrity sha512-6c3pds2OhxTxPXGfXOj2Et0HIM/ba5rjSDSXXIuxSHmrRgZkNiDh4U9KvJR5lXjEkMndPFqKRXuIY91Lp1hPrA==
 
-"@genstackio/translator-amazontranslate@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@genstackio/translator-amazontranslate/-/translator-amazontranslate-0.1.4.tgz#a12b3a40eca75175d8963d9acc77a9ca2b56ce5b"
-  integrity sha512-lEV1YyIvsfZPBtKCeAtArfeiCSvn9Z4cH4UOyhvhuGKhFuwV92Tr2B6H83OrLQhibsLgyy95AodWUs7HmvDFQQ==
+"@genstackio/translator-amazontranslate@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@genstackio/translator-amazontranslate/-/translator-amazontranslate-0.1.5.tgz#07d581657f0a862bbf74041e7b7caca6da19eb68"
+  integrity sha512-RNFb/Za/yxG0mOgzwQt5MywZhBcvGNRGbpardvAD8SWlGs9srq2fqaXmy6NDWdkxdcEaBsqmnASdA7vkCg6B8g==
   dependencies:
     "@genstackio/translator" "^0.5.3"
     html-entities "^2.3.3"
 
-"@genstackio/translator-deepl@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@genstackio/translator-deepl/-/translator-deepl-0.1.3.tgz#dc5dfdcf1350542d61826d98976b500cf8242c2f"
-  integrity sha512-0kXUq2exHgXsP7yMtiGKifaLG3SwDVJ1nvtAcOWSTKZg8xgFwTeXNPvcAhmYPUYS6Ts0HGWdRbcBWzgF6TcBoA==
+"@genstackio/translator-deepl@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@genstackio/translator-deepl/-/translator-deepl-0.1.4.tgz#9a8f5b775d4ab89551a00820f9cfa7b8560f96f0"
+  integrity sha512-q9bjgayGuXKZpJGEf1WazMohlhfGCIJ0Vb+Mph/1c/+say4hkI7+oomOZdwg6KwtTQrDOrhFNe+5kJMNhbIP7A==
   dependencies:
     "@genstackio/translator" "^0.5.3"
     deepl-node "^1.7.2"
