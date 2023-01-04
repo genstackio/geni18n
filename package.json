@@ -1,6 +1,6 @@
 {
   "name": "@genstackio/i18ngen",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "I18n files Generator",
   "license": "MIT",
   "main": "lib/index.js",
