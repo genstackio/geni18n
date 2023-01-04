@@ -296,10 +296,10 @@
   resolved "https://registry.yarnpkg.com/@genstackio/deep/-/deep-0.1.0.tgz#0c996b6001ff44f08123f41153e14076ca3e5c31"
   integrity sha512-6c3pds2OhxTxPXGfXOj2Et0HIM/ba5rjSDSXXIuxSHmrRgZkNiDh4U9KvJR5lXjEkMndPFqKRXuIY91Lp1hPrA==
 
-"@genstackio/translator-amazontranslate@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@genstackio/translator-amazontranslate/-/translator-amazontranslate-0.1.8.tgz#022ef2e5bea58acc4b5d4dabae8a65321d3219a5"
-  integrity sha512-jvrvuDxmctphCR+xiGtUoMFm8S+esjwdSznaRt1MdEm2IQps1ZawIo4eMo97BqRRUP8CqXN8gPR4NXR5X9XncQ==
+"@genstackio/translator-amazontranslate@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@genstackio/translator-amazontranslate/-/translator-amazontranslate-0.1.9.tgz#961179a6202eee038f28b32aae4f4cb0e6a34c8c"
+  integrity sha512-xs31ZvZj3Zfk74tJDszyBfh70R1d2FCfrNdCGPoQxKN3wU+AlyAisKag7vIE2itymZzRQ5BhKIa8SrxY8N37vg==
   dependencies:
     "@genstackio/translator" "^0.5.3"
     "@ohoareau/array" "^0.1.1"
