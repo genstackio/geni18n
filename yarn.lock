@@ -296,30 +296,35 @@
   resolved "https://registry.yarnpkg.com/@genstackio/deep/-/deep-0.1.0.tgz#0c996b6001ff44f08123f41153e14076ca3e5c31"
   integrity sha512-6c3pds2OhxTxPXGfXOj2Et0HIM/ba5rjSDSXXIuxSHmrRgZkNiDh4U9KvJR5lXjEkMndPFqKRXuIY91Lp1hPrA==
 
-"@genstackio/translator-amazontranslate@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@genstackio/translator-amazontranslate/-/translator-amazontranslate-0.1.9.tgz#961179a6202eee038f28b32aae4f4cb0e6a34c8c"
-  integrity sha512-xs31ZvZj3Zfk74tJDszyBfh70R1d2FCfrNdCGPoQxKN3wU+AlyAisKag7vIE2itymZzRQ5BhKIa8SrxY8N37vg==
+"@genstackio/deep@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@genstackio/deep/-/deep-0.1.1.tgz#c312a9a07d17b6eee171934dc690913ca3a4c29d"
+  integrity sha512-0DSiy4S7PS6FlDiFhbcOGhAdsnU20I4M853HrM+WwRcZ/G96ggfjibNCdsqbhL9RXPg1tZKiU/M8kreB3jzYPQ==
+
+"@genstackio/translator-amazontranslate@^0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@genstackio/translator-amazontranslate/-/translator-amazontranslate-0.1.11.tgz#c762ffdd13faf39223d246b928a41cb8e99fd495"
+  integrity sha512-WSUcKMhZGSHSmYSubNxRlk2R7N/pySnWE0mcU7JIgvipMIm8HnfGLYos7FrSa/JLzZrZ/+6p4I5YeD0mtIViQQ==
   dependencies:
-    "@genstackio/translator" "^0.5.3"
+    "@genstackio/translator" "^0.5.5"
     "@ohoareau/array" "^0.1.1"
     html-entities "^2.3.3"
 
-"@genstackio/translator-deepl@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@genstackio/translator-deepl/-/translator-deepl-0.1.4.tgz#9a8f5b775d4ab89551a00820f9cfa7b8560f96f0"
-  integrity sha512-q9bjgayGuXKZpJGEf1WazMohlhfGCIJ0Vb+Mph/1c/+say4hkI7+oomOZdwg6KwtTQrDOrhFNe+5kJMNhbIP7A==
+"@genstackio/translator-deepl@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@genstackio/translator-deepl/-/translator-deepl-0.1.6.tgz#db535464f012fe417d23100c219b8b41945ed52e"
+  integrity sha512-zrQkursFJvCvffj9ckishlb9DgBJ2/3q7N3gpcJYqQucczTJuD1STvez9W+5tf2YmsnGjfqQcWOqNsyMmHeVhQ==
   dependencies:
-    "@genstackio/translator" "^0.5.3"
+    "@genstackio/translator" "^0.5.5"
     deepl-node "^1.7.2"
     html-entities "^2.3.3"
 
-"@genstackio/translator@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@genstackio/translator/-/translator-0.5.3.tgz#f089127b5904b23fe841c2a1221cb7182b81dad2"
-  integrity sha512-5r8JR+Y65WKs7BUkel0RYRqdsniYTu1QNwOBcXMM/DR2LXU11LEW9hJTNliv9JTOs/e7qCFUEneoT107M23d4g==
+"@genstackio/translator@^0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@genstackio/translator/-/translator-0.5.5.tgz#e2b9ca1100c2ed145152030e81252168be37f012"
+  integrity sha512-hj6lYltIRWv9/E+wlSEee1p5r46w7JshHd4IGkjlDNwEKo6wqxEZpYSXLA03Z/lGCS/T9mCb05KxloCg7LLLUA==
   dependencies:
-    "@genstackio/deep" "^0.1.0"
+    "@genstackio/deep" "^0.1.1"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
