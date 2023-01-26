@@ -8,10 +8,11 @@ import fs from 'fs';
 import ejs from 'ejs';
 import path from 'path';
 import {TranslatorService} from "@genstackio/translator";
-import {deepSort} from "@genstackio/deep";
+import {deepClone, deepSort} from "@genstackio/deep";
 import DeeplPlugin from "@genstackio/translator-deepl";
 import {AmazonTranslatePlugin} from "@genstackio/translator-amazontranslate";
 import ITranslatorService from "@genstackio/translator/lib/ITranslatorService";
+import removeKeys from "../utils/removeKeys";
 
 export class GenstackioI18nGenerator extends AbstractI18nGenerator {
     protected readonly translator: ITranslatorService;
@@ -23,18 +24,28 @@ export class GenstackioI18nGenerator extends AbstractI18nGenerator {
         const options = this.getOptions();
         return this.translator.listLocales(options?.config || {});
     }
-    async generate(): Promise<void> {
+    async cleanKeys(keys: string[]): Promise<void> {
+        return this.applyGenerate(
+            (masterKeys: any) => removeKeys(deepClone(masterKeys), keys),
+            (masterKeys: any, originalMasterKeys: any) => originalMasterKeys,
+        );
+    }
+    protected async applyGenerate(preFn?: (any) => any, postFn?: (masterKeys:any, originalKeys:any) => any) {
         const project = this.getProject();
         const options = this.getOptions();
 
         if (!project.translations) throw new Error(`No project translations configuration`);
 
-        const masterKeys = await this.fetchMasterTranslation(project.translations);
+        const originalMasterKeys = await this.fetchMasterTranslation(project.translations);
         const generatedLocales = (project.translations.locales || []).filter(l => l !== project.translations!.master);
+
+        let masterKeys = preFn ? preFn(originalMasterKeys) : originalMasterKeys;
 
         const reports = await Promise.allSettled(generatedLocales.map(async (locale) =>
             this.generateProjectLocale(locale, project.translations!.master, masterKeys, project, options)
         ));
+
+        masterKeys = postFn ? postFn(masterKeys, originalMasterKeys) : masterKeys;
 
         await this.saveTranslationFile(project.translations!, project.translations.master, masterKeys);
 
@@ -52,6 +63,9 @@ export class GenstackioI18nGenerator extends AbstractI18nGenerator {
             });
             throw new Error(`Error(s) in i18n generation for project '${project.name}' and locales: ${Object.keys(failures).join(', ')}`);
         }
+    }
+    async generate(): Promise<void> {
+        return this.applyGenerate();
     }
     protected getLocaleTranslationFilePath(dir: string, file: string, locale: string) {
         return `${path.resolve(dir)}/${file.replace('%locale%', locale)}`;

@@ -17,6 +17,7 @@ export abstract class AbstractI18nGenerator implements II18nGenerator {
     async listLocales(): Promise<Record<string, { sourceLocales: string[]; targetLocales: string[] }>> {
         return {};
     }
+    abstract cleanKeys(keys: string[]): Promise<void>;
     async generate(): Promise<void> {
     }
 }
