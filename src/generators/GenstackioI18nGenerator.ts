@@ -13,6 +13,7 @@ import DeeplPlugin from "@genstackio/translator-deepl";
 import {AmazonTranslatePlugin} from "@genstackio/translator-amazontranslate";
 import ITranslatorService from "@genstackio/translator/lib/ITranslatorService";
 import removeKeys from "../utils/removeKeys";
+import {chunkize} from "@ohoareau/array";
 
 export class GenstackioI18nGenerator extends AbstractI18nGenerator {
     protected readonly translator: ITranslatorService;
@@ -41,9 +42,13 @@ export class GenstackioI18nGenerator extends AbstractI18nGenerator {
 
         let masterKeys = preFn ? preFn(originalMasterKeys) : originalMasterKeys;
 
-        const reports = await Promise.allSettled(generatedLocales.map(async (locale) =>
-            this.generateProjectLocale(locale, project.translations!.master, masterKeys, project, options)
-        ));
+        const reports = await chunkize(generatedLocales, 5).reduce(async (acc, chunk) => {
+            const localAcc = await acc;
+            const results = await Promise.allSettled(chunk.map(async (locale) =>
+                this.generateProjectLocale(locale, project.translations!.master, masterKeys, project, options)
+            ));
+            return [...localAcc, ...results];
+        }, Promise.resolve([] as any[]));
 
         masterKeys = postFn ? postFn(masterKeys, originalMasterKeys) : masterKeys;
 

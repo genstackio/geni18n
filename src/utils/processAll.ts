@@ -1,6 +1,7 @@
 import loadConfig from "./loadConfig";
 import {i18n_generator_options, project_definition} from "../types";
 import mergeProjectWithCommonConfig from "./mergeProjectWithCommonConfig";
+import {chunkize} from "@ohoareau/array";
 
 export async function processAll<T = any>(options: i18n_generator_options, processor: (project: project_definition, options: i18n_generator_options) => Promise<T>) {
     options.config && await loadConfig(options.config, options);
@@ -12,12 +13,16 @@ export async function processAll<T = any>(options: i18n_generator_options, proce
         return acc;
     }, [] as project_definition[]);
 
-    const reports = await Promise.allSettled(projects.map(async (project: project_definition) =>
-        processor(
-            mergeProjectWithCommonConfig(project, options.config?.common?.projects),
-            options
-        )
-    ));
+    const reports = await chunkize(projects, 3).reduce(async (acc, chunk) => {
+        const localAcc = await acc;
+        const results = await Promise.allSettled(chunk.map(async (project: project_definition) =>
+            processor(
+                mergeProjectWithCommonConfig(project, options.config?.common?.projects),
+                options
+            )
+        ));
+        return [...localAcc, ...results];
+    }, Promise.resolve([] as any[]));
 
     const {successes, failures} = reports.reduce((acc: any, r: any, index: number) => {
         if (r.status === 'fulfilled') acc.successes[projects[index].name] = r.value;
