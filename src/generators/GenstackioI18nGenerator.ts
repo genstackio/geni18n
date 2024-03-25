@@ -73,7 +73,7 @@ export class GenstackioI18nGenerator extends AbstractI18nGenerator {
         return this.applyGenerate();
     }
     protected getLocaleTranslationFilePath(dir: string, file: string, locale: string) {
-        return `${path.resolve(dir)}/${file.replace('%locale%', locale).replace('%locale_dash%', locale.replace('_', '-')).replace('%locale_dash_lower%', locale.replace('_', '-').toLowerCase)}`;
+        return `${path.resolve(dir)}/${file.replace('%locale%', locale).replace('%locale_dash%', locale.replace('_', '-')).replace('%locale_dash_lower%', locale.replace('_', '-').toLowerCase())}`;
     }
     protected async fetchMasterTranslation(def: translations_project_definition) {
         return this.fetchTranslationFile(def, def.master);
