@@ -17,6 +17,7 @@ export type project_definition = {
 }
 
 export type translations_project_definition = {
+    flat?: boolean;
     sort?: boolean;
     clean?: boolean;
     dir: string;

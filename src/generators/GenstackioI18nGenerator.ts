@@ -83,17 +83,19 @@ export class GenstackioI18nGenerator extends AbstractI18nGenerator {
         return fs.existsSync(p) ? require(p) : {};
     }
     protected async generateProjectLocale(locale: string, masterLocale: string, masterKeys: any, project: project_definition, options: i18n_generator_options) {
+        const x = await this.fetchTranslationFile(project.translations!, locale);
+        const updated = await this.translator.translateI18n(
+            project.translations?.flat ? {flat: x} : x,
+            project.translations?.flat ? {flat: masterKeys}: masterKeys,
+            masterLocale,
+            locale,
+            options.config,
+            project.translations
+        );
         await this.saveTranslationFile(
             project.translations!,
             locale,
-            await this.translator.translateI18n(
-                await this.fetchTranslationFile(project.translations!, locale),
-                masterKeys,
-                masterLocale,
-                locale,
-                options.config,
-                project.translations
-            )
+            project.translations?.flat ? updated?.flat : updated
         );
     }
     // noinspection JSUnusedLocalSymbols
