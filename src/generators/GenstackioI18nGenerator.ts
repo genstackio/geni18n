@@ -129,7 +129,13 @@ export class GenstackioI18nGenerator extends AbstractI18nGenerator {
             ;
             return acc;
         }, {});
-        const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/index.ts.ejs`, 'utf-8'), {...(vars || {}), locales, localeMap});
+        const fileNameMapping = {
+            i18next: 'index.ts',
+            default: 'index.ts',
+            default_ts: 'index-ts.ts',
+        };
+        const fileName = fileNameMapping[def.format || ''] || fileNameMapping['default'];
+        const x = await ejs.render(fs.readFileSync(`${__dirname}/../../resources/templates/genstackio/${fileName}.ejs`, 'utf-8'), {...(vars || {}), locales, localeMap});
         fs.writeFileSync(path.resolve(def.path), x);
     }
     protected createTranslator(): ITranslatorService {

@@ -1,0 +1,7 @@
+<% locales.forEach(locale => { %>import <%= locale %> from '<%- ('undefined' !== typeof dir) ? dir : '../translations' %>/<%= locale %>.json';
+<% }) %>
+const translations = {
+<% Object.entries(localeMap).forEach(([locale, key]) => { %>    <%- key === locale ? key : `'${key}': ${locale}` %>,
+<% }) %>};
+
+export default translations;
